@@ -16,20 +16,33 @@ public class LBSGeoAPI {
         ReadDataBase get = new ReadDataBase();
 //        get.connectionToDatabase(45005, 10795);
         for(int i: jj.keySet()){
-            //System.out.println(jj.get(i).get());
+            //System.out.println(jj.get(i));
             double lon = 0;
             double lat = 0;
+            double dbm = 0;
+            for(int powerDbm: (jj.get(i)).keySet()){
+
+                double powerInDdmb = jj.get(i).get(powerDbm).get("power");
+
+                dbm += powerInDdmb;
+
+            }
+
+
             for(int gg: (jj.get(i)).keySet()){
                 int cellID = jj.get(i).get(gg).get("cellid");
                 int LAC = jj.get(i).get(gg).get("lac");
                 HashMap<String, Double> connect = get.connectionToDatabase(LAC, cellID);
-                System.out.println(connect);
-
-                lon += connect.get("lon");
-                lat += connect.get("lat");
+                //System.out.println(connect);
+                int powerInDdmb = jj.get(i).get(gg).get("power");
+                double powerCof = powerInDdmb/dbm;
+                lon += connect.get("lon") * powerCof;
+                lat += connect.get("lat") * powerCof;
             }
-            double lonitude = lon / 3;
-            double latitude = lat / 3;
+
+            int countCells = jj.get(i).size();
+            double lonitude = lon;
+            double latitude = lat;
             HashMap<String, Double> send_final = new HashMap<>();
             send_final.put("lon", lonitude);
             send_final.put("lat", latitude);
@@ -41,19 +54,33 @@ public class LBSGeoAPI {
 
         }
         for(int i: jj_2.keySet()){
-            //System.out.println(jj.get(i).get());
+            //System.out.println(jj_2.get(i));
             double lon = 0;
             double lat = 0;
+            double dbm = 0;
+            for(int powerDbm: (jj_2.get(i)).keySet()){
+
+                double powerInDdmb = jj_2.get(i).get(powerDbm).get("power");
+                //System.out.println(powerInDdmb);
+                dbm += powerInDdmb;
+
+            }
+            //System.out.println(dbm);
+
             for(int gg: (jj_2.get(i)).keySet()){
                 int cellID = jj_2.get(i).get(gg).get("cellid");
                 int LAC = jj_2.get(i).get(gg).get("lac");
                 HashMap<String, Double> connect = get.connectionToDatabase(LAC, cellID);
-//                System.out.println(connect);
-                lon += connect.get("lon");
-                lat += connect.get("lat");
+                //System.out.println(connect);
+                int powerInDdmb = jj_2.get(i).get(gg).get("power");
+                double powerCof = powerInDdmb/dbm;
+                lon += connect.get("lon") * powerCof;
+                lat += connect.get("lat") * powerCof;
             }
-            double lonitude = lon / 3;
-            double latitude = lat / 3;
+
+            int countCells = jj_2.get(i).size();
+            double lonitude = lon;
+            double latitude = lat;
             HashMap<String, Double> send_final = new HashMap<>();
             send_final.put("lon", lonitude);
             send_final.put("lat", latitude);
@@ -61,8 +88,6 @@ public class LBSGeoAPI {
             String result_lon = String.format("%.7f", lonitude);
             String result_lat = String.format("%.7f", latitude);
             System.out.printf("Широта - %s, Долгота - %s +- 300 метров\n", result_lat, result_lon);
-
-
         }
 
     }

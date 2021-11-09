@@ -29,7 +29,7 @@ public class ReadDataBase {
 //    }
     public HashMap<String, Double> connectionToDatabase(int lac, int cellid) throws SQLException {
         Formatter query = new Formatter();
-        query.format("select * from towers where cellid = %s and lac = %s and mcc = 250", cellid, lac);
+        query.format("select * from towers where cellid = %s and lac = %s and mcc = 250 and mnc = 1", cellid, lac);
 
         //String query = "select * from towers where cellid = ? and lac = ?";
         HashMap<String, Double> Coordinates = new HashMap<>();

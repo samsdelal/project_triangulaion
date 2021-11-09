@@ -12,7 +12,7 @@ class JsonFile{
 class Cell{
     public int lac;
     public int cellid;
-    public int power;
+    public byte power;
 
 }
 
