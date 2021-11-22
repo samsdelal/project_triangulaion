@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class LBSGeoAPI {
 
-    public void getCoordinates() throws FileNotFoundException, SQLException {
+    public void getCoordinates() throws FileNotFoundException, SQLException, ClassNotFoundException {
         ReadJSON nes = new ReadJSON();
         HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> jj =  nes.getJson_1();
         HashMap<Integer, HashMap<Integer, HashMap<String, Integer>>> jj_2 =  nes.getJson_2();

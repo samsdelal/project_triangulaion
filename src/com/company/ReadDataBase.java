@@ -1,4 +1,4 @@
-package com.company;
+package src.com.company;
 
 import java.sql.*;
 import java.util.Formatter;
@@ -8,6 +8,11 @@ public class ReadDataBase {
     private static Connection conn;
     private static Statement stmt;
     private static ResultSet rs;
+
+    public ReadDataBase() throws SQLException, ClassNotFoundException {
+        conn = DriverManager.getConnection("jdbc:mysql://4.tcp.ngrok.io:16655/cell", "ro1", "a2188e43a3688dffcba3c958b0bcc416");
+        Class.forName("com.mysql.cj.jdbc.Driver");
+    }
 
 //    public void connectionToDatabase() throws SQLException {
 //        String query = "select * from towers where cellid = 2241 and lac = 45005";
@@ -29,13 +34,13 @@ public class ReadDataBase {
 //    }
     public HashMap<String, Double> connectionToDatabase(int lac, int cellid) throws SQLException {
         Formatter query = new Formatter();
-        query.format("select * from towers where cellid = %s and lac = %s and mcc = 250 and mnc = 1", cellid, lac);
+        query.format("select * from towers where cellid = %s and lac = %s and mcc = 250 and mnc = 1 and data_source = -1", cellid, lac);
 
         //String query = "select * from towers where cellid = ? and lac = ?";
         HashMap<String, Double> Coordinates = new HashMap<>();
         try{
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://0.tcp.ngrok.io:15791/cell", "ro1", "a2188e43a3688dffcba3c958b0bcc416");
+//            Class.forName("com.mysql.cj.jdbc.Driver");
+            //conn = DriverManager.getConnection("jdbc:mysql://4.tcp.ngrok.io:16655/cell", "ro1", "a2188e43a3688dffcba3c958b0bcc416");
             stmt = conn.createStatement();
             rs = stmt.executeQuery(String.valueOf(query));
             while (rs.next()){
@@ -48,7 +53,7 @@ public class ReadDataBase {
                 return Coordinates;
             }
 
-        }catch (SQLException | ClassNotFoundException e){
+        }catch (SQLException e){
             e.printStackTrace();
         }
 
